@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Fake Location</string>
+    <string name="channel_name">Mock location</string>
+    <string name="mock_starting">Starting mock location…</string>
+    <string name="mock_at">Reporting location: %1$s</string>
+    <string name="mock_at_exit_blind">Reporting location: %1$s (turn on Wi-Fi to detect leaving)</string>
+    <string name="mock_watching">Showing real location · watching %1$d place(s)</string>
+    <string name="stop">Stop</string>
+</resources>
