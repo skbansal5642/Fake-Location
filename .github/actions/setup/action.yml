@@ -1,0 +1,28 @@
+name: Set up Flutter and Android
+description: Installs Java, Flutter, and the project's packages, and generates the Gradle wrapper.
+
+runs:
+  using: composite
+  steps:
+    - name: Set up Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: temurin
+        java-version: "17"
+        cache: gradle
+
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: "3.44.2"
+        channel: stable
+        cache: true
+
+    - name: Get packages
+      shell: bash
+      run: flutter pub get
+
+    # gradlew is git-ignored in Flutter projects; this generates it without building.
+    - name: Generate Gradle wrapper
+      shell: bash
+      run: flutter build apk --config-only

@@ -39,6 +39,28 @@ flutter test
 cd android && ./gradlew :app:testDebugUnitTest
 ```
 
+## CI and releases
+
+- **CI** (`.github/workflows/ci.yml`) runs on every push to `main` and every pull request: analyze, Dart tests, Kotlin unit tests, and a release build. The APK is attached to the run for 14 days.
+- **Release** (`.github/workflows/release.yml`) is started by hand from **Actions → Release → Run workflow** on `main`. Enter a version such as `1.2.0`; it runs the same checks, builds an APK signed with the release key, creates the tag `v1.2.0`, and publishes a GitHub Release with the APK and its SHA-256 checksum. Release notes are generated from the commits since the last release.
+
+One-time setup for releases: create the signing key and store it as repository secrets with
+
+```bash
+tool/setup_release_signing.sh
+```
+
+It asks for a password and saves `ANDROID_KEYSTORE_BASE64`, `ANDROID_KEYSTORE_PASSWORD`, `ANDROID_KEY_ALIAS`, and `ANDROID_KEY_PASSWORD`. Back up the keystore (default `~/.android-keys/fake-location-upload.jks`) and its password: every future release must be signed with the same key, or phones won't install it as an update.
+
+For a locally signed build, create `android/key.properties` (git-ignored) pointing at the keystore:
+
+```properties
+storeFile=/absolute/path/to/fake-location-upload.jks
+storePassword=...
+keyAlias=upload
+keyPassword=...
+```
+
 ## Icon and splash
 
 The artwork is defined in `tool/generate_brand_assets.py`, which renders the PNGs in `assets/` with headless Chrome. To regenerate:
